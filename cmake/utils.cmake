@@ -1,0 +1,37 @@
+# Function to get the chain of all linked libraries of a given target
+function(get_target_linked_libraries tgt _output)
+	set(visited "")
+	set(queue "${tgt}")
+	while(queue)
+		list(GET queue 0 current)
+		list(REMOVE_AT queue 0)
+		if(TARGET ${current})
+			if(NOT "${visited}" MATCHES "${current}")
+				list(APPEND visited "${current}")
+				get_target_property(deps ${current} LINK_LIBRARIES)
+				if(deps)
+					list(APPEND queue ${deps})
+				endif()
+			endif()
+		endif()
+	endwhile()
+	list(REMOVE_AT visited 0)
+	set(${_output} ${visited} PARENT_SCOPE)
+endfunction()
+
+
+# Function to get the list of all tools used by the given targets 
+function(resolve_used_tools return_USED_TOOLS TARGETS_LIST TOOLS_LIST)  # ATTENTION: use quotes when passing a list as an argument
+	#message(${TOOLS_LIST})
+	set(TOOLS_TO_DEPLOY "")
+	foreach(TARGET_NAME ${TARGETS_LIST})
+		get_target_linked_libraries(${TARGET_NAME} LINKED_LIBS)
+		foreach(LNK_LIB ${LINKED_LIBS})
+			if(${LNK_LIB} IN_LIST TOOLS_LIST AND NOT ${LNK_LIB} IN_LIST TOOLS_TO_DEPLOY)
+				list(APPEND TOOLS_TO_DEPLOY ${LNK_LIB})
+			endif()
+		endforeach()
+	endforeach()
+	set(${return_USED_TOOLS} ${TOOLS_TO_DEPLOY} PARENT_SCOPE)
+endfunction()
+
