@@ -1,4 +1,4 @@
-cmake_minimum_required( VERSION 3.28 )
+cmake_minimum_required( VERSION 3.22 )
 
 project( DockerCppInterface VERSION 1.0.0 )
 
@@ -174,7 +174,7 @@ set(PASSED_FIRST_CONFIGURE ON CACHE INTERNAL "Already Configured once?")
 ########################################################################################
 # INSTALL
 ########################################################################################
-message(STATUS "::: installing files at ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "Binaries will be installed at ${CMAKE_INSTALL_PREFIX}")
 
 
 ####################################################################

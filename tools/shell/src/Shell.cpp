@@ -117,7 +117,7 @@ Shell::Shell()
 }
 
 Shell::Shell(Shell::Input cmd)
-	: _pimpl(std::make_unique<ShellImpl>()), _command(cmd)
+	: _command(cmd), _pimpl(std::make_unique<ShellImpl>())
 {
 }
 
