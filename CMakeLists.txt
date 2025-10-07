@@ -99,7 +99,7 @@ option(BUILD_TESTS "Build Tests" OFF)
 
 add_subdirectory(tools)
 
-set(DOCKER_API_LIB_NAME    "Docker")
+set(DOCKER_API_LIB_NAME    "docker")
 set(DOCKER_API_SOURCE_DIR  "${CMAKE_CURRENT_SOURCE_DIR}/src" )
 set(DOCKER_API_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include" )
 
@@ -151,8 +151,10 @@ add_dependencies(${DOCKER_API_LIB_NAME}
 )
 
 set_target_properties(${DOCKER_API_LIB_NAME} PROPERTIES
-    OUTPUT_NAME				${_OUTPUT_NAME}
-    DEBUG_POSTFIX			"D"
+    OUTPUT_NAME   ${_OUTPUT_NAME}
+    DEBUG_POSTFIX "D"
+    FOLDER        "Docker"
+	 PUBLIC_HEADER ${DOCKER_API_INCLUDE_DIR}/docker.h
 )
 
 
@@ -204,7 +206,7 @@ install(TARGETS ${DOCKER_API_LIB_NAME} ${SHELL_LIB_NAME}
 	to specify a different name. The value given to the FILE option must be a file name with the .cmake extension.
 ]]
 install(EXPORT dockerapi-targets
-    NAMESPACE dockerapi::                      # add a namespace to find the package
+    NAMESPACE docker::                      # add a namespace to find the package
     DESTINATION ${CMAKE_INSTALL_PREFIX}/cmake  # dir in which to export the cmake export files to be used to create a package config
 )
 
