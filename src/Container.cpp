@@ -52,14 +52,37 @@ std::ostream& Container::operator<<(std::ostream& stream)
     return stream;
 }
 
-void Container::set_status_callback(std::function<void()> fun)
+void Container::set_status_callback(std::function<void()> function)
 {
-    if(!fun)
+    if(!function)
     {
-        printf("DOCKERAPI: CALLBACK IS EMPTY");
+        std::cerr << "docker::Container::set_status_callback: function is empty" << std::endl;
     }
+	 _notify_status_changed = function;
+    _notify_and_send_status_changed = nullptr;
+	 _notify_status_changed_with_this = nullptr;
+}
 
-    _notify_status_changed = fun;
+void Container::set_status_callback(std::function<void(Status)> function)
+{
+	if (!function)
+	{
+		std::cerr << "docker::Container::set_status_callback: function is empty" << std::endl;
+	}
+	_notify_status_changed = nullptr;
+	_notify_and_send_status_changed = function;
+	_notify_status_changed_with_this = nullptr;
+}
+
+void Container::set_status_callback(std::function<void(Container*)> function)
+{
+	if (!function)
+	{
+		std::cerr << "docker::Container::set_status_callback: function is empty" << std::endl;
+	}
+	_notify_status_changed = nullptr;
+	_notify_and_send_status_changed = nullptr;
+	_notify_status_changed_with_this = function;
 }
 
 Shell::Output Container::update_runtime_infos()
@@ -85,15 +108,6 @@ Shell::Output Container::exec_start()
 	update_runtime_infos();
 
 	return ret;
-}
-
-Shell::Output Container::exec_run()
-{
-    Shell::Output ret = CLI::Run(_runtime_infos.name).execute();
-
-    update_runtime_infos();
-
-    return ret;
 }
 
 Shell::Output Container::exec_stop()
@@ -188,6 +202,14 @@ Shell::Output Container::update_status()
 		if (_notify_status_changed)
 		{
 			_notify_status_changed(); // trigger callback
+		}
+		if (_notify_and_send_status_changed)
+		{
+			_notify_and_send_status_changed(stat); // trigger callback
+		}
+		if (_notify_status_changed_with_this)
+		{
+			_notify_status_changed_with_this(this); // trigger callback
 		}
 	}
 

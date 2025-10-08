@@ -592,9 +592,11 @@ namespace docker
         /**
             @brief Set the callback function. The function will be called every time the status of the container changes, i.e., when the status of
 			       the docker container is different from the status of the container object.
-            @param fun - Function to call
+            @param function - Callback function
         **/
-        void set_status_callback(std::function<void()> fun);
+        void set_status_callback(std::function<void()> function);
+        void set_status_callback(std::function<void(Status)> function);
+        void set_status_callback(std::function<void(Container*)> function);
 
 		/**
 			@brief  The current status of the constainer object. It may be different from the
@@ -620,14 +622,6 @@ namespace docker
 			@retval  - Exit code and standard output resulting from the command execution.
 		**/
 		Shell::Output exec_start();
-
-
-        /**
-            @brief  Run the container, attached to video. [WARNING] Need to call exec_create first!
-                    Status will change from CREATED to RUNNING (or UNKNOWN if unsuccesfull execution).
-            @retval  - Exit code and standard output resulting from the command execution.
-        **/
-        Shell::Output exec_run();
 
 		/**
 			@brief  Stops the container. [WARNING] Need to call exec_start first!
@@ -680,6 +674,8 @@ namespace docker
 		Status _current_status = Status::UNKNOWN;
 		std::array<std::string, 7> _status_names;
 		std::function<void()> _notify_status_changed;
+		std::function<void(Status)> _notify_and_send_status_changed;
+		std::function<void(Container*)> _notify_status_changed_with_this;
 	};
 
     // UTILIY FUNCTIONS

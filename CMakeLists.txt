@@ -95,7 +95,8 @@ include(GNUInstallDirs)
 # Docker target configuration
 ###################################################
 
-option(BUILD_TESTS "Build Tests" OFF)
+option(BUILD_TESTS		"Build Tests"		OFF)
+option(BUILD_EXAMPLES	"Build Examples"	OFF)
 
 add_subdirectory(tools)
 
@@ -257,3 +258,16 @@ install(FILES
 	${CMAKE_BINARY_DIR}/cmake/dockerapi-config-version.cmake
 	DESTINATION ${CMAKE_INSTALL_PREFIX}/cmake
 )
+
+
+message ("")
+message (STATUS "BUILD ENVIRONMENT INFO:")
+message (STATUS "System name           -> ${CMAKE_SYSTEM_NAME}")
+message (STATUS "System version        -> ${CMAKE_SYSTEM_VERSION}")
+message (STATUS "Compiler Path         -> ${CMAKE_CXX_COMPILER}")
+message (STATUS "Compiler Version      -> ${CMAKE_CXX_COMPILER_ID} version ${CMAKE_CXX_COMPILER_VERSION}")
+message (STATUS "Compiler Flags        -> ${CMAKE_CXX_FLAGS}")
+message (STATUS "Linker library suffix -> ${CMAKE_LINK_LIBRARY_SUFFIX}")
+message ("")
+
+
