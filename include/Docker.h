@@ -6,9 +6,6 @@
 **/
 #pragma once
 
-
-#pragma once
-
 #if defined(WIN32) && defined(_BUILD_DOCKER_LIB_DLL)
 	#if defined(_DOCKER_LIB_EXPORT)
 		#define DOCKERAPI __declspec(dllexport)
