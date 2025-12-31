@@ -31,7 +31,7 @@ int main(int, char* [])
 
 	// choose an image to run (mandatory)
    std::string image_name = "test_image:latest";
-	std::cout << docker::CLI::Images().execute().second << std::endl;
+	std::cout << docker::CLI::Images().execute().result << std::endl;
 	std::cout << "Choose Image: " << std::endl;
 	std::getline(std::cin, image_name);
 
@@ -68,9 +68,9 @@ int main(int, char* [])
 
 		if (strings.front() == "inspect")
 		{
-			std::cout << CLI::Inspect(test_container.get_runtime_infos().name).extract(CLI::Inspect::Extract::ID).execute().second << "\n"
-				<< CLI::Inspect(test_container.get_runtime_infos().name).extract(CLI::Inspect::Extract::IMAGE_ID).execute().second << "\n"
-				<< CLI::Inspect(test_container.get_runtime_infos().name).extract(CLI::Inspect::Extract::STATUS).execute().second << std::endl;
+			std::cout << CLI::Inspect(test_container.get_runtime_infos().name).extract(CLI::Inspect::Extract::ID).execute().result << "\n"
+				<< CLI::Inspect(test_container.get_runtime_infos().name).extract(CLI::Inspect::Extract::IMAGE_ID).execute().result << "\n"
+				<< CLI::Inspect(test_container.get_runtime_infos().name).extract(CLI::Inspect::Extract::STATUS).execute().result << std::endl;
 		}
 
 		if (strings.front() == "start")
@@ -102,8 +102,8 @@ int main(int, char* [])
 
 		file_log 
 			<< "\nCommand: " << strings.front() 
-			<< "\nExit code: " << result.first 
-			<< "\nResult: " << result.second 
+			<< "\nExit code: " << result.exitCode
+			<< "\nResult: " << result.result 
 			<< std::endl;
 
 	}

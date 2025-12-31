@@ -1,5 +1,4 @@
 #include "docker.h"
-#include "stdheaders.hpp"
 #include "Shell.h"
 
 using namespace docker;
@@ -123,7 +122,7 @@ Shell::Output Container::exec_remove()
 {
 	Shell::Output	ret = CLI::Remove(_runtime_infos.name).execute();
 
-	if (ret.first != Shell::SUCCESS)
+	if (ret.exitCode != Shell::SUCCESS)
 	{
 		_runtime_infos.current_status = "unknown";
 		_current_status = Status::UNKNOWN;
@@ -152,7 +151,7 @@ Shell::Output docker::Container::exec_destroy()
 {
 	Shell::Output	ret = CLI::Remove(_runtime_infos.name).force().execute();
 	
-	if (ret.first != Shell::SUCCESS)
+	if (ret.exitCode != Shell::SUCCESS)
 	{
 		_runtime_infos.current_status = "unknown";
 		_current_status = Status::UNKNOWN;
@@ -174,14 +173,14 @@ Shell::Output Container::update_status()
 
 	Shell::Output	ret = CLI::Inspect(_runtime_infos.name).extract(CLI::Inspect::STATUS).execute();
 
-	if (ret.first != Shell::SUCCESS)
+	if (ret.exitCode != Shell::SUCCESS)
 	{
 		stat = Status::UNKNOWN;
 		_runtime_infos.current_status = "unknown";
 		return ret;
     }
 
-    auto it = std::find(_status_names.begin(), _status_names.end(), ret.second);
+    auto it = std::find(_status_names.begin(), _status_names.end(), ret.result);
 
     if (it == _status_names.end())
 	{
@@ -221,13 +220,13 @@ Shell::Output Container::inspect_ID()
 	Shell::Output	ret = CLI::Inspect(_runtime_infos.name).extract(CLI::Inspect::ID).execute();
 	std::string id;
 
-	if (ret.first != Shell::SUCCESS)
+	if (ret.exitCode != Shell::SUCCESS)
 	{
 		id = "???";
 		return ret;
 	}
 
-	id = ret.second;
+	id = ret.result;
 
 	if (_runtime_infos.ID != id)
 	{

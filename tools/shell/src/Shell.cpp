@@ -3,9 +3,6 @@
 /*
 * Select what implementation to use
 */
-#ifdef USE_BOOST
-#include "ShellBoost.hpp" // cross platform
-#endif // USE_BOOST
 #ifdef USE_WIN32
 #include "ShellWin32.hpp"
 #endif // USE_WIN32
@@ -14,10 +11,11 @@
 #endif // USE_UNIX
 
 #include <iostream>
+
 /*
 * Define methods using bridge
 */
-std::pair<int, std::string> Shell::execute()
+Shell::Output Shell::execute()
 {
 	_pimpl->execute();
 	
@@ -40,7 +38,7 @@ std::pair<int, std::string> Shell::execute()
 	}
 
 	// catch the exit code
-	_exit_status = exit_code;
+	_exit_status = static_cast<Exit>(exit_code);
 	
 	// clean outputs of pimpl
 	_pimpl->StdErr="";
@@ -48,19 +46,19 @@ std::pair<int, std::string> Shell::execute()
 	_pimpl->ExitStatus = 0;
 
 	// return 
-	std::pair<int, std::string> result;
-	result.first = _exit_status;
-	result.second = _result;
+	Shell::Output result;
+	result.exitCode = _exit_status;
+	result.result = _result;
 	return result;
 }
 
-std::pair<int, std::string> Shell::execute(const Shell::Input command)
+Shell::Output Shell::execute(const Shell::Input command)
 {
 	this->setCommand(command);
 	return this->execute();
 }
 
-Shell::Output2 Shell::prompt(const Input command)
+Shell::Output Shell::prompt(const Input command)
 {
 	Shell::ShellImpl shell;
 
@@ -78,7 +76,7 @@ Shell::Output2 Shell::prompt(const Input command)
 	std::string result;
 	std_out.empty() ? result = error_out : result = std_out;
 
-	Shell::Output2 o;
+	Shell::Output o;
 	o.exitCode = (Exit)exit_code;
 	o.result = std_out;
 

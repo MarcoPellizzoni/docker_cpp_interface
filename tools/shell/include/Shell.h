@@ -24,23 +24,15 @@ public:
 		FAIL,
 	};
 
-	struct Output2
+	struct Output
 	{
 		Exit		exitCode;
 		std::string result;
-		friend bool operator==(Output2 o, Exit code)
-		{
-			return o.exitCode == code;
-		}
-		friend bool operator!=(Output2 o, Exit code)
-		{
-			return o.exitCode != code;
-		}
+		friend bool operator==(Output o, Exit code) { return o.exitCode == code; }
+		friend bool operator!=(Output o, Exit code) { return o.exitCode != code; }
 	};
 
-	typedef std::string                 Input;
-	typedef std::pair<int, std::string> Output;
-
+	typedef std::string Input;
 
 	Shell();
 	Shell(Input cmd);
@@ -67,12 +59,12 @@ public:
 	Output execute(const Input commandS);
 
 	/**
-		@brief  Immediatly executes a give command. Do not hold the command and the result.
+		@brief  Immediatly executes a given command. Do not hold the command and the result.
 				No need to create instance of the class.
 		@param  command - the command to execute
 		@retval         - the result
 	**/
-	static Output2 prompt(const Input command);
+	static Output prompt(const Input command);
 
 	void setCommand(const Input cmd) noexcept;
 
@@ -83,7 +75,7 @@ public:
 
 protected:
 	
-	int         _exit_status = -1;
+	Exit		_exit_status;
 	std::string _result;
 	Input 		_command;
 

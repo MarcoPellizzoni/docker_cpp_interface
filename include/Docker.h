@@ -19,12 +19,7 @@
 #include "Shell.h"
 #include <string>
 #include <array>
-#include <set>
 #include <memory>
-#include <vector>
-#include <map>
-#include <list>
-#include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <functional>

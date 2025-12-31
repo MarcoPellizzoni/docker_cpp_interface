@@ -8,13 +8,13 @@ Shell::Output docker::CLI::destroy_all_containers()
 {
 	Shell s{};
 	auto res = s.execute("docker ps -a --format {{.ID}}");
-	if (res.first != Shell::SUCCESS)
+	if (res.exitCode != Shell::SUCCESS)
 	{
 		return res;
 	}
 
 	std::list<std::string> containers_IDs;
-	utils::split_string(res.second, '\n', [&containers_IDs](std::string s) {containers_IDs.emplace_back(s); });
+	utils::split_string(res.result, '\n', [&containers_IDs](std::string s) {containers_IDs.emplace_back(s); });
 	for (auto& cnt : containers_IDs)
 	{
 		res = s.execute("docker rm -f " + cnt);
