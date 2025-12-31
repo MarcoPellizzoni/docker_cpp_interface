@@ -38,13 +38,13 @@ endif()
 target_sources(${SHELL_LIB_NAME} 
 	PRIVATE 
 		${SHELL_SRC_DIR}/Shell.cpp
-		${SHELL_INCLUDE_DIR}/shell.h
+		${SHELL_INCLUDE_DIR}/Shell.h
 )
 
 set_target_properties(${SHELL_LIB_NAME} PROPERTIES
     OUTPUT_NAME   ${SHELL_LIB_OUTPUT_NAME}
     DEBUG_POSTFIX "D"
-	 PUBLIC_HEADER ${SHELL_INCLUDE_DIR}/shell.h
+	 PUBLIC_HEADER ${SHELL_INCLUDE_DIR}/Shell.h
 )
 
 target_include_directories(${SHELL_LIB_NAME} 

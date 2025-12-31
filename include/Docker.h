@@ -23,7 +23,8 @@
 #include <iostream>
 #include <sstream>
 #include <functional>
-
+#include <list>
+#include <algorithm>
 
 namespace docker
 {
